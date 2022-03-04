@@ -70,20 +70,34 @@ module.exports = {
         // 匹配规则
         test: /\.jsx?$/,
         // 用来处理命中规则的库
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: ["@babel/preset-env"],
-            plugins: [
-              [
-                "@babel/plugin-transform-runtime",
-                {
-                  corejs: 3,
-                },
+        use: [
+          {
+            loader: "babel-loader",
+            options: {
+              presets: ["@babel/preset-env"],
+              plugins: [
+                [
+                  "@babel/plugin-transform-runtime",
+                  {
+                    corejs: 3,
+                  },
+                ],
               ],
-            ],
+            },
           },
-        },
+          // 自定义组件 给console添加内容
+          {
+            loader: path.resolve(
+              __dirname,
+              "public",
+              "webpack",
+              "logWebpackLoader.js"
+            ),
+            options: {
+              log: true,
+            },
+          },
+        ],
         exclude: /node_modules/,
       },
       // 处理样式文件
